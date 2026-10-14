@@ -1,5 +1,8 @@
 #include <Arduino.h>
 
+void leituraBloqueante();
+void leituraNaoBloqueante();
+
 void setup() 
 {
   Serial.begin(115200);
@@ -12,6 +15,39 @@ void setup()
 }
 
 void loop() 
+{
+  
+}
+
+void leituraNaoBloqueante()
+{
+  const int Tamanho_max = 50;
+  //* tamanho do vetor (inclui '\0')
+  char linha[Tamanho_max];
+  int position;
+
+  while(Serial.available() > 0)
+  {
+    char c = Serial.read();
+    //* o continue pula o restante do while naquela volta e passa pra
+    //* leitura do próximo caractere. O '\r' é lido e simplesmente descartado
+    //* sem entrar no vetor
+    if(c == '\r') continue;
+    
+    if(c == '\n')
+    {
+      linha[position] = '\0';
+      position = 0;
+    }
+    else if (position < Tamanho_max -1)
+    {
+      linha[position] = c;
+      position++;
+    }
+  }
+}
+
+void leituraBloqueante()
 {
   //* available() diz quantos bytes já chegaram e estão esperando leitura
   if(Serial.available() > 0)
