@@ -2,6 +2,7 @@
 
 void leituraBloqueante();
 void leituraNaoBloqueante();
+void processarFrase(const char* texto);
 
 void setup() 
 {
@@ -16,15 +17,15 @@ void setup()
 
 void loop() 
 {
-  
+  leituraNaoBloqueante();
 }
 
 void leituraNaoBloqueante()
 {
   const int Tamanho_max = 50;
   //* tamanho do vetor (inclui '\0')
-  char linha[Tamanho_max];
-  int position;
+  static char frase[Tamanho_max];
+  static int position;
 
   while(Serial.available() > 0)
   {
@@ -36,15 +37,24 @@ void leituraNaoBloqueante()
     
     if(c == '\n')
     {
-      linha[position] = '\0';
+      frase[position] = '\0';
+      if(position > 0) processarFrase(frase);
       position = 0;
     }
     else if (position < Tamanho_max -1)
     {
-      linha[position] = c;
+      frase[position] = c;
       position++;
     }
   }
+}
+
+void processarFrase(const char* texto)
+{
+  Serial.printf ("Recebido: [%s]\n\r", texto);
+
+  if (strcmp(texto, "ola") == 0)
+    Serial.println("Ola para voce também");
 }
 
 void leituraBloqueante()
