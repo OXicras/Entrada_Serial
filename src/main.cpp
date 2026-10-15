@@ -9,7 +9,7 @@ void AplicaCor();
 int vermelho = 0;
 int verde = 0;
 int azul = 0;
-int brilho = 100;
+int brilho = 0;
 
 //! =================================================================
 void setup() 
@@ -20,7 +20,7 @@ void setup()
   //* O padrão é 1000ms
 
   Serial.println();
-  Serial.println("Digite o seu nome e pressione ENTER: ");
+  Serial.println("Digite o seu comando e pressione ENTER: ");
 }
 
 //! =================================================================
@@ -85,30 +85,35 @@ void processarFrase(char* texto)
     vermelho = 255;
     verde = 0;
     azul = 0;
+    brilho = 100;
   }
   else if(strcasecmp(comando, "VERDE") == 0)
   {
     vermelho = 0;
     verde = 255;
     azul = 0;
+    brilho = 100;
   }
   else if(strcasecmp(comando, "AZUL") == 0)
   {
     vermelho = 0;
     verde = 0;
     azul = 255;
+    brilho = 100;
   }
   else if(strcasecmp(comando, "BRANCO") == 0)
   {
     vermelho = 255;
     verde = 255;
     azul = 255;
+    brilho = 100;
   }
   else if(strcasecmp(comando, "DESLIGA") == 0)
   {
     vermelho = 0;
     verde = 0;
     azul = 0;
+    brilho = 0;
   }
   else if(strcasecmp(comando, "RGB") == 0)
   {
@@ -141,6 +146,7 @@ void processarFrase(char* texto)
     Serial.println(buffer);
     return;
   }
+  AplicaCor();
 }
 
 //! =================================================================
