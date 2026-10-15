@@ -125,9 +125,12 @@ void processarFrase(char* texto)
 
     char* cursor = parametro;
 
-    vermelho = constrain(lerProximoNumero(cursor), 0, 255); //* limita o valor de 0 a 255 (se for maior vira 255 e vice versa)
-    verde = constrain(lerProximoNumero(cursor), 0, 255);
-    azul = constrain(lerProximoNumero(cursor), 0, 255);
+    int r = lerProximoNumero(cursor);
+    int g = lerProximoNumero(cursor);
+    int b = lerProximoNumero(cursor);
+    vermelho = constrain(r, 0, 255);
+    verde = constrain(g, 0, 255);
+    azul = constrain(b, 0, 255);
   }
   else if(strcasecmp(comando, "BRILHO") == 0)
   {
@@ -164,8 +167,18 @@ void AplicaCor()
 }
 
 //! =================================================================
+
+//* cursor é uma referencia (&) para um ponteiro char (char*)
+//* a funcão recebe a própria variável de quem chamou e não uma cópia
+
+//* PARAMETRO     | ALTERA O TEXTO APONTADO | ALTERA PARA ONDE O PONTEIRO DE FORA APONTA
+//* char * p      |    sim (*p = '\0')      |         não porque ele é uma cópia
+//* const char* p |           não           |                   não
+//* char* &p      |           sim           | sim, é a própria variável passada como parametro
+
 int lerProximoNumero(char*& cursor)
 {
+  if(cursor == NULL) return 0; //? proteje o estouro de memória no caso atoi(NULL)
   int valor = atoi(cursor);
   char* espaco = strchr(cursor, ' ');
   cursor = (espaco != NULL)? espaco + 1 : NULL;
